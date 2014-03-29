@@ -33,8 +33,10 @@ class Vendorer
         run "mkdir -p #{File.dirname(target_path)}"
         if @copy_from_path
           copy_from_path(target_path, url || path)
-        else
+        elsif url.include?('://')
           download_repository(url, target_path, options)
+        else
+          run "cp -r #{url} #{target_path}"
         end
         yield target_path if block_given?
       end
